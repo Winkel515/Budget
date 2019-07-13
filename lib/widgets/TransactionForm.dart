@@ -26,6 +26,8 @@ class _TransactionFormState extends State<TransactionForm> {
       title,
       amount,
     );
+
+    Navigator.of(context).pop(); // Closes the modal on function run
   }
 
   @override

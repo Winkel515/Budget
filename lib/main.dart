@@ -10,7 +10,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter App',
+      theme: ThemeData(
+        primarySwatch: Colors.purple,
+        accentColor: Colors.amber,
+      ),
+      title: 'Budget',
       home: MyHomePage(),
     );
   }
@@ -65,46 +69,44 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Budget'),
-          actions: <Widget>[
-            IconButton(
-                icon: Icon(Icons.add),
-                onPressed: () {
-                  _showFormModal(context);
-                })
-          ],
-        ),
-        body: ScrollConfiguration(
-          behavior: ScrollBehavior(),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Card(
-                  child: Container(
-                    width: double.infinity,
-                    color: Colors.blue,
-                    child: Text('Chart'),
-                  ),
-                  elevation: 5,
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Budget'),
+        actions: <Widget>[
+          IconButton(
+              icon: Icon(Icons.add),
+              onPressed: () {
+                _showFormModal(context);
+              })
+        ],
+      ),
+      body: ScrollConfiguration(
+        behavior: ScrollBehavior(),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Card(
+                child: Container(
+                  width: double.infinity,
+                  color: Colors.blue,
+                  child: Text('Chart'),
                 ),
-                TransactionList(_transactions),
-              ],
-            ),
+                elevation: 5,
+              ),
+              TransactionList(_transactions),
+            ],
           ),
         ),
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add),
-          onPressed: () {
-            _showFormModal(context);
-          },
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+          _showFormModal(context);
+        },
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
