@@ -4,12 +4,12 @@ class Transaction {
   final String id;
   final String title;
   final double amount;
-  final DateTime data;
+  final DateTime date;
 
   Transaction({
     @required this.id,
     @required this.title,
     @required this.amount,
-    @required this.data,
+    @required this.date,
   });
 }
