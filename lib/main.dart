@@ -13,6 +13,23 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.purple,
         accentColor: Colors.amber,
+        fontFamily: 'Quicksand',
+        textTheme: ThemeData.light().textTheme.copyWith(
+              title: TextStyle(
+                fontFamily: 'OpenSans',
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+        appBarTheme: AppBarTheme(
+          textTheme: ThemeData.light().textTheme.copyWith(
+                title: TextStyle(
+                  fontFamily: 'OpenSans',
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+        ),
       ),
       title: 'Budget',
       home: MyHomePage(),
@@ -27,18 +44,18 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _transactions = [
-    Transaction(
-      id: '0',
-      title: 'New Shoes',
-      amount: 80.00,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: '1',
-      title: 'New Computer',
-      amount: 500.00,
-      date: DateTime.now(),
-    ),
+//    Transaction(
+//      id: '0',
+//      title: 'New Shoes',
+//      amount: 80.00,
+//      date: DateTime.now(),
+//    ),
+//    Transaction(
+//      id: '1',
+//      title: 'New Computer',
+//      amount: 500.00,
+//      date: DateTime.now(),
+//    ),
   ];
 
   void _addTransaction(String title, double amount) {
@@ -71,7 +88,9 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Budget'),
+        title: Text(
+          'Budget',
+        ),
         actions: <Widget>[
           IconButton(
               icon: Icon(Icons.add),
