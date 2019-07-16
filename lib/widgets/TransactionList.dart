@@ -11,9 +11,8 @@ class TransactionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 400,
-      child: transactions.isEmpty
+    return LayoutBuilder(builder: (ctx, constraints) {
+      return transactions.isEmpty
           ? Column(
               children: <Widget>[
                 Text('No transactions added yet',
@@ -22,7 +21,7 @@ class TransactionList extends StatelessWidget {
                   height: 10,
                 ),
                 Container(
-                  height: 200,
+                  height: constraints.maxHeight * 0.6,
                   child: Image.asset(
                     'assets/images/waiting.png',
                     fit: BoxFit.cover,
@@ -57,18 +56,24 @@ class TransactionList extends StatelessWidget {
                     subtitle: Text(
                       DateFormat.yMMMd().format(transactions[index].date),
                     ),
-                    trailing: IconButton(
-                      icon: Icon(Icons.delete),
-                      color: Theme.of(context).errorColor,
-                      onPressed: () {
-                        deleteTransaction(transactions[index].id);
-                      },
-                    ),
+                    trailing: MediaQuery.of(context).size.width > 500
+                        ? FlatButton.icon(
+                            textColor: Theme.of(context).errorColor,
+                            onPressed: () {},
+                            icon: Icon(Icons.delete),
+                            label: Text('Delete'))
+                        : IconButton(
+                            icon: Icon(Icons.delete),
+                            color: Theme.of(context).errorColor,
+                            onPressed: () {
+                              deleteTransaction(transactions[index].id);
+                            },
+                          ),
                   ),
                 );
               },
               itemCount: transactions.length,
-            ),
-    );
+            );
+    });
   }
 }

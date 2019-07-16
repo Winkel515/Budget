@@ -32,7 +32,8 @@ class Chart extends StatelessWidget {
       return {
         'day': DateFormat.E().format(weekDay).substring(0, 1),
         'amount': totalSum,
-        'relativeAmount': (totalSpending != 0.0) ? totalSum / totalSpending : 0.0,
+        'relativeAmount':
+            (totalSpending != 0.0) ? totalSum / totalSpending : 0.0,
       };
     }).reversed.toList();
   }
@@ -44,35 +45,21 @@ class Chart extends StatelessWidget {
     return Card(
       elevation: 6,
       margin: EdgeInsets.all(20),
-      child: Column(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(top: 10),
-            child: Text(
-              'Last 7 days spending',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+      child: Padding(
+        padding: EdgeInsets.all(10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: groupedTransactionValues.map((data) {
+            return Flexible(
+              fit: FlexFit.tight,
+              child: ChartBar(
+                label: data['day'],
+                absoluteSpending: data['amount'],
+                relativeSpending: data['relativeAmount'],
               ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.all(10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: groupedTransactionValues.map((data) {
-                return Flexible(
-                  fit: FlexFit.tight,
-                  child: ChartBar(
-                    label: data['day'],
-                    absoluteSpending: data['amount'],
-                    relativeSpending: data['relativeAmount'],
-                  ),
-                );
-              }).toList(),
-            ),
-          ),
-        ],
+            );
+          }).toList(),
+        ),
       ),
     );
   }
