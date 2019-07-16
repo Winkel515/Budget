@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import './widgets/TransactionForm.dart';
 import './models/transaction.dart';
 import './widgets/TransactionList.dart';
+import './widgets/Chart.dart';
 
 void main() => runApp(MyApp());
 
@@ -10,17 +11,20 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.purple,
         accentColor: Colors.amber,
         fontFamily: 'Quicksand',
         textTheme: ThemeData.light().textTheme.copyWith(
-              title: TextStyle(
-                fontFamily: 'OpenSans',
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+            title: TextStyle(
+              fontFamily: 'OpenSans',
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
             ),
+            button: TextStyle(
+              color: Colors.white,
+            )),
         appBarTheme: AppBarTheme(
           textTheme: ThemeData.light().textTheme.copyWith(
                 title: TextStyle(
@@ -45,29 +49,44 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _transactions = [
 //    Transaction(
-//      id: '0',
 //      title: 'New Shoes',
 //      amount: 80.00,
-//      date: DateTime.now(),
+//      date: DateTime.now().subtract(Duration(days: 4)),
 //    ),
 //    Transaction(
-//      id: '1',
 //      title: 'New Computer',
 //      amount: 500.00,
-//      date: DateTime.now(),
+//      date: DateTime.now().subtract(Duration(days: 2)),
 //    ),
   ];
 
-  void _addTransaction(String title, double amount) {
+  List<Transaction> get _recentTransaction {
+    return _transactions.where((tx) {
+      return tx.date.isAfter(DateTime.now().subtract(Duration(days: 7)));
+    }).toList();
+  }
+
+  void _addTransaction({String title, double amount, DateTime date}) {
     Transaction newTransaction = Transaction(
-      id: _transactions.length.toString(),
       title: title,
       amount: amount,
-      date: DateTime.now(),
+      date: date,
     );
 
     setState(() {
+      for (int i = 0; i < _transactions.length; i++) {
+        if (newTransaction.date.compareTo(_transactions[i].date) == -1) {
+          _transactions.insert(i, newTransaction);
+          return;
+        }
+      }
       _transactions.add(newTransaction);
+    });
+  }
+
+  void _deleteTransaction(String id) {
+    setState(() {
+      _transactions.removeWhere((tx) => tx.id == id);
     });
   }
 
@@ -106,15 +125,8 @@ class _MyHomePageState extends State<MyHomePage> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              Card(
-                child: Container(
-                  width: double.infinity,
-                  color: Colors.blue,
-                  child: Text('Chart'),
-                ),
-                elevation: 5,
-              ),
-              TransactionList(_transactions),
+              Chart(_recentTransaction),
+              TransactionList(_transactions, _deleteTransaction),
             ],
           ),
         ),
@@ -125,7 +137,7 @@ class _MyHomePageState extends State<MyHomePage> {
           _showFormModal(context);
         },
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }
